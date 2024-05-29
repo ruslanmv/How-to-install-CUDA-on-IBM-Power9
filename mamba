@@ -1,0 +1,83 @@
+Here's a step-by-step guide to install PyTorch on Power 8 architecture with Red Hat 8 using Miniforge and Mamba:
+
+**Step 1: Install Miniforge**
+
+Download the Miniforge installer from the official website and install it:
+```bash
+wget https://github.com/conda-forge/miniforge/releases/latest/download/Mambaforge-Linux-ppc64le.sh
+bash Mambaforge-Linux-ppc64le.sh
+```
+Follow the installation instructions to complete the installation.
+
+**Step 2: Create a new Mamba environment**
+
+Create a new Mamba environment with the required dependencies:
+```bash
+mamba create -n pytorch-env python=3.10 cudatoolkit=11.2 cudnn libopenblas blas cmake ninja
+```
+This will create a new environment named `pv` with Python 3.10, CUDA Toolkit 11.2, cuDNN, OpenBLAS, BLAS, CMake, and Ninja.
+
+**Step 3: Activate the environment**
+
+Activate the newly created environment:
+```bash
+mamba activate pytorch-env
+```
+**Step 4: Clone PyTorch**
+
+Clone the PyTorch repository and checkout the desired version (in this case, v1.12.1):
+```bash
+git clone https://github.com/pytorch/pytorch.git
+cd pytorch
+git checkout v1.12.1
+```
+**Step 5: Ignore MKL installation**
+
+As you mentioned, ignore the PyTorch documentation's recommendation to install MKL.
+
+**Step 6: Initialize submodules**
+
+Initialize and update the submodules:
+```bash
+git submodule sync
+git submodule update --init --recursive
+```
+**Step 7: Set MAX_JOBS**
+
+Set the `MAX_JOBS` environment variable to limit the number of threads:
+```bash
+export MAX_JOBS=40
+```
+This sets the number of threads to 40, which is suitable for Power 8 architecturp 8: Build PyTorch**
+
+Build PyTorch using the `setup.py` script:
+```bash
+python setup.py build
+```
+**Step 9: Create a wheel package**
+
+Creata wheel packagyTorch:
+```bash
+python3 setup.py bdist_wheel
+```
+**Step 10: Install PyTorch**
+
+Install PyTorch from the wheel package:
+```bash
+pip install dist/torch*.whl
+```
+**Step 11: Verify PyTorch installation**
+
+Verify that PyTorch is installed correctly:
+```bash
+python3 -c 'import torch'
+```
+This should print the PyTorch version and confirm that the installation was successful.
+
+**Additional notes:**
+
+* Make sure you have the correct version of Python and the required dependencies installed.
+* If you encounter issues during installation, you can try installing PyTorch from source using the instructions on the PyTorch website.
+* For more information on installing PyTorch on Power 8 architecture, you can refer to the PyTorch documentation and the IBM PowerAI documentation.
+
+I hope this helps! Let me know if you have any further questions or issues.
